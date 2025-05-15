@@ -6,17 +6,14 @@ import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 import os
 
-# Load dataset
 df = pd.read_csv("driver_assist_dataset.csv")
 
 X = df[['distance', 'traffic', 'road_condition']].values
 y = df['safe_speed'].values
 
-# Train neural network
 nn_model = MLPRegressor(hidden_layer_sizes=(15, 10), max_iter=2000, random_state=42)
 nn_model.fit(X, y)
 
-# Fuzzy logic system
 distance = ctrl.Antecedent(np.arange(0, 51, 1), 'distance')
 road_quality = ctrl.Antecedent(np.arange(0, 1.1, 0.1), 'road_quality')
 speed = ctrl.Consequent(np.arange(0, 101, 1), 'speed')
@@ -71,4 +68,3 @@ for i, case in enumerate(test_cases):
     plt.tight_layout()
     plt.savefig(f"simulation_outputs/case_{i+1}_output.png")
     plt.close()
-
